@@ -70,6 +70,13 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "{ena
 # Set Raycast to use Cmd+Space
 defaults write com.raycast.macos raycastGlobalHotkey -string "Command-49"
 
+# Configure power management and screen lock settings
+echo "⚡ Configuring power settings..."
+# Never sleep the display
+sudo pmset -a displaysleep 0
+# Disable requiring password after sleep/screen saver
+defaults write com.apple.screensaver askForPassword -int 0
+
 # Symlink config files
 echo "🔗 Linking configuration files..."
 DOTFILES_DIR="$(cd "${BASH_SOURCE%/*}" && pwd)"
@@ -125,9 +132,14 @@ mise install
 
 echo "✨ Setup complete!"
 echo ""
-echo "⚠️  Note: You need to log out and log back in for keyboard shortcuts to take effect"
+echo "⚠️  Note: You need to log out and log back in for all changes to take effect"
+echo "   Keyboard shortcuts:"
 echo "   - Spotlight Cmd+Space: disabled"
 echo "   - Raycast Cmd+Space: enabled"
+echo ""
+echo "   Power settings:"
+echo "   - Display sleep: never"
+echo "   - Password after sleep: disabled"
 
 # Stop the sudo keepalive process
 kill "$SUDO_KEEPALIVE_PID" 2>/dev/null
