@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
-
 # Opt out of Homebrew analytics for this script
 export HOMEBREW_NO_ANALYTICS=1
 
@@ -24,11 +22,7 @@ fi
 
 # Install and upgrade packages from Brewfile
 echo "📦 Installing and upgrading packages from Brewfile..."
-brew bundle install --file="${BASH_SOURCE%/*}/Brewfile" || {
-    echo "⚠️  Some packages failed to install. Retrying failed packages..."
-    sleep 2
-    brew bundle install --file="${BASH_SOURCE%/*}/Brewfile" || echo "⚠️  Some packages still failed. You can retry with: brew bundle install"
-}
+brew bundle install --file="${BASH_SOURCE%/*}/Brewfile"
 
 # Symlink config files
 echo "🔗 Linking configuration files..."
