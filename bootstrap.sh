@@ -69,7 +69,8 @@ HOTKEYS_PLIST="$HOME/Library/Preferences/com.apple.symbolichotkeys.plist"
 /usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:64:enabled false" "$HOTKEYS_PLIST" 2>/dev/null \
   || /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:64:enabled bool false" "$HOTKEYS_PLIST"
 
-# Set Raycast to use Cmd+Space
+# Configure Raycast: skip onboarding, set hotkey
+defaults write com.raycast.macos onboardingSkipped -bool true
 defaults write com.raycast.macos raycastGlobalHotkey -string "Command-49"
 
 # Configure power management and screen lock settings
@@ -78,6 +79,21 @@ echo "⚡ Configuring power settings..."
 sudo pmset -a displaysleep 0
 # Disable requiring password after sleep/screen saver
 defaults write com.apple.screensaver askForPassword -int 0
+
+# Add Raycast to login items if not already present
+if ! osascript -e 'tell application "System Events" to get the name of every login item' 2>/dev/null | grep -q "Raycast"; then
+    osascript -e 'tell application "System Events" to make login item at end with properties {path:"/Applications/Raycast.app", hidden:false}'
+    echo "  ✓ Added Raycast to login items"
+fi
+
+# Start Raycast if not running
+if ! pgrep -x "Raycast" > /dev/null; then
+    open -a Raycast
+    echo "  ✓ Started Raycast"
+fi
+
+# Apply keyboard shortcut changes immediately (without requiring logout)
+/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
 # Symlink config files
 echo "🔗 Linking configuration files..."
@@ -134,14 +150,11 @@ mise install
 
 echo "✨ Setup complete!"
 echo ""
-echo "⚠️  Note: You need to log out and log back in for all changes to take effect"
-echo "   Keyboard shortcuts:"
-echo "   - Spotlight Cmd+Space: disabled"
-echo "   - Raycast Cmd+Space: enabled"
+echo "⚠️  Manual step required: Disable Spotlight's Cmd+Space shortcut"
+echo "   System Settings → Keyboard → Keyboard Shortcuts → Spotlight"
+echo "   → Uncheck 'Show Spotlight search'"
 echo ""
-echo "   Power settings:"
-echo "   - Display sleep: never"
-echo "   - Password after sleep: disabled"
+echo "✅ Raycast configured with Cmd+Space and added to login items"
 
 # Stop the sudo keepalive process
 kill "$SUDO_KEEPALIVE_PID" 2>/dev/null
