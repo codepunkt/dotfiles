@@ -59,6 +59,11 @@ else
     echo "✅ Homebrew already installed"
 fi
 
+# Configure git
+echo "🔧 Configuring git..."
+git config --global user.email "christoph@codepunkt.de"
+git config --global user.name "Christoph Werner"
+
 # Install and upgrade packages from Brewfile
 echo "📦 Installing and upgrading packages from Brewfile..."
 brew bundle install --file="${BASH_SOURCE%/*}/Brewfile"
