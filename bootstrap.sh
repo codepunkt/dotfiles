@@ -5,6 +5,16 @@ export HOMEBREW_NO_ANALYTICS=1
 
 echo "🚀 Starting macOS setup..."
 
+# Install Rosetta 2 on Apple Silicon Macs
+if [[ $(uname -m) == 'arm64' ]]; then
+    if ! /usr/bin/pgrep -q oahd; then
+        echo "🔧 Installing Rosetta 2..."
+        softwareupdate --install-rosetta --agree-to-license
+    else
+        echo "✅ Rosetta 2 already installed"
+    fi
+fi
+
 # Install Homebrew if not already installed
 if ! command -v brew &> /dev/null; then
     echo "📦 Installing Homebrew..."
