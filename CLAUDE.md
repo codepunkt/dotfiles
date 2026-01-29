@@ -79,6 +79,41 @@ git pull              # Get latest Brewfile
 - Ensure any changes preserve idempotency
 - Use `brew bundle dump --force` to capture system state
 
+## Git Commit Guidelines
+
+When creating commits for this repository:
+
+### Commit Message Format
+Use **Conventional Commits** syntax:
+```
+<type>: <description>
+
+[optional body]
+```
+
+**Types:**
+- `feat:` - New feature or capability
+- `fix:` - Bug fix
+- `chore:` - Maintenance tasks (e.g., updating Brewfile)
+- `docs:` - Documentation changes
+- `refactor:` - Code restructuring without functional changes
+
+**Example:**
+```
+feat: add mise configuration management
+
+- Add .config/mise/config.toml with Node.js LTS setup
+- Update bootstrap.sh to symlink config files
+- Update CLAUDE.md with .config directory documentation
+```
+
+### Co-authorship
+**NEVER include Claude co-authorship lines** in commits. Do not add:
+- `Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>`
+- Any similar attribution to AI assistance
+
+Commits should only reflect the user's authorship.
+
 ## Homebrew Bundle Behavior
 
 Key `brew bundle` commands:
