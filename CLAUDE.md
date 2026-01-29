@@ -27,8 +27,18 @@ The single source of truth for installed software. Contains three types of entri
 ### .config/
 Mirrors the `~/.config/` directory structure. Contains application configurations:
 - `mise/config.toml` - mise (runtime manager) configuration with Node.js version and settings
+- `ohmyposh/zen.toml` - oh-my-posh prompt theme configuration
 
 Add additional configs here maintaining the same directory structure as `~/.config/`
+
+### ZSH Configuration Files
+- `.zshrc` - Main shell configuration (zinit plugins, aliases, keybindings, integrations)
+- `.zshenv` - Environment variables for non-interactive shells
+- `.zprofile` - Login shell configuration (Homebrew, OrbStack)
+
+**Plugin Manager**: Uses zinit (auto-installs on first run)
+**Prompt**: oh-my-posh with zen theme
+**Key Features**: Auto-suggestions, syntax highlighting, fuzzy completions, mise/fzf/zoxide integration
 
 ### bootstrap.sh
 The setup orchestrator. Must:
@@ -36,8 +46,14 @@ The setup orchestrator. Must:
 - Configure PATH for Apple Silicon Macs
 - Run `brew bundle install` to sync packages (installs + upgrades)
 - Run `brew bundle cleanup --force` to remove extras
-- Symlink config files from `.config/` to `~/.config/`
-- Be idempotent and safe to re-run
+- Symlink config files:
+  - `.config/mise` → `~/.config/mise`
+  - `.config/ohmyposh` → `~/.config/ohmyposh`
+  - `.zshrc` → `~/.zshrc`
+  - `.zshenv` → `~/.zshenv`
+  - `.zprofile` → `~/.zprofile`
+- Run `mise install` to install Node.js and other tools
+- Be idempotent and safe to re-run (backs up existing files to `*.backup`)
 
 ### .gitignore
 Excludes:

@@ -34,18 +34,46 @@ DOTFILES_DIR="${BASH_SOURCE%/*}"
 # Create ~/.config if it doesn't exist
 mkdir -p ~/.config
 
+# Helper function to create symlinks
+link_file() {
+    local source="$1"
+    local target="$2"
+    local name="$3"
+
+    if [ -L "$target" ]; then
+        echo "  ✓ $name already linked"
+    elif [ -e "$target" ]; then
+        echo "  ⚠ $name exists, backing up to ${target}.backup"
+        mv "$target" "${target}.backup"
+        ln -s "$source" "$target"
+        echo "  ✓ Linked $name"
+    else
+        ln -s "$source" "$target"
+        echo "  ✓ Linked $name"
+    fi
+}
+
 # Symlink mise config
 if [ -d "$DOTFILES_DIR/.config/mise" ]; then
-    if [ -L ~/.config/mise ]; then
-        echo "  ✓ mise config already linked"
-    elif [ -e ~/.config/mise ]; then
-        echo "  ⚠ ~/.config/mise exists, backing up to ~/.config/mise.backup"
-        mv ~/.config/mise ~/.config/mise.backup
-        ln -s "$DOTFILES_DIR/.config/mise" ~/.config/mise
-    else
-        ln -s "$DOTFILES_DIR/.config/mise" ~/.config/mise
-        echo "  ✓ Linked mise config"
-    fi
+    link_file "$DOTFILES_DIR/.config/mise" ~/.config/mise "mise config"
+fi
+
+# Symlink oh-my-posh config
+if [ -d "$DOTFILES_DIR/.config/ohmyposh" ]; then
+    link_file "$DOTFILES_DIR/.config/ohmyposh" ~/.config/ohmyposh "oh-my-posh config"
+fi
+
+# Symlink zsh files
+if [ -f "$DOTFILES_DIR/.zshrc" ]; then
+    link_file "$DOTFILES_DIR/.zshrc" ~/.zshrc ".zshrc"
+fi
+
+if [ -f "$DOTFILES_DIR/.zshenv" ]; then
+    link_file "$DOTFILES_DIR/.zshenv" ~/.zshenv ".zshenv"
+fi
+
+if [ -f "$DOTFILES_DIR/.zprofile" ]; then
+    link_file "$DOTFILES_DIR/.zprofile" ~/.zprofile ".zprofile"
 fi
 
 # Install mise tools (Node.js, etc.)
