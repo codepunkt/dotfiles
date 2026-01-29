@@ -74,6 +74,7 @@ cask "chatgpt"                      # ChatGPT desktop app
 cask "codex"                        # OpenAI Codex coding agent
 cask "antigravity"                  # AI coding agent IDE
 cask "cursor"                       # AI-powered code editor
+cask "windsurf"                     # Agentic IDE with AI Flow paradigm
 cask "visual-studio-code"           # Code editor
 cask "github"                       # GitHub Desktop
 
@@ -117,6 +118,7 @@ cask "spotmenu"                     # Spotify/iTunes menu bar
 # ----------------------------------------------------------------------------
 # Utilities
 # ----------------------------------------------------------------------------
+cask "1password"                    # Password manager
 cask "nordvpn"                      # VPN client
 cask "background-music"             # Per-app audio control
 cask "elgato-control-center"        # Control Elgato devices

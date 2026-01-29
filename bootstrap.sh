@@ -2,12 +2,15 @@
 
 set -e
 
+# Opt out of Homebrew analytics for this script
+export HOMEBREW_NO_ANALYTICS=1
+
 echo "🚀 Starting macOS setup..."
 
 # Install Homebrew if not already installed
 if ! command -v brew &> /dev/null; then
     echo "📦 Installing Homebrew..."
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
     # Add Homebrew to PATH for Apple Silicon Macs
     if [[ $(uname -m) == 'arm64' ]]; then

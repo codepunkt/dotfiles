@@ -92,6 +92,9 @@ dlvid() {
 # corepack: auto-download package manager without asking
 export COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 
+# Opt out of Homebrew analytics
+export HOMEBREW_NO_ANALYTICS=1
+
 # Setup mise tool version manager
 eval "$(mise activate zsh)"
 export MISE_MISSING_RUNTIME_BEHAVIOUR=autoinstall
