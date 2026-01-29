@@ -24,12 +24,19 @@ The single source of truth for installed software. Contains three types of entri
 
 **Update Command**: `brew bundle dump --force` (overwrites with current system state)
 
+### .config/
+Mirrors the `~/.config/` directory structure. Contains application configurations:
+- `mise/config.toml` - mise (runtime manager) configuration with Node.js version and settings
+
+Add additional configs here maintaining the same directory structure as `~/.config/`
+
 ### bootstrap.sh
 The setup orchestrator. Must:
 - Install Homebrew if missing (first-time setup only)
 - Configure PATH for Apple Silicon Macs
 - Run `brew bundle install` to sync packages (installs + upgrades)
 - Run `brew bundle cleanup --force` to remove extras
+- Symlink config files from `.config/` to `~/.config/`
 - Be idempotent and safe to re-run
 
 ### .gitignore

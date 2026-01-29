@@ -1,0 +1,19 @@
+[tools]
+node = "lts"
+
+[settings]
+# Needed for hooks to work
+experimental = true
+
+# tools can read the versions files used by other version managers
+# for example, .nvmrc in the case of node's nvm
+idiomatic_version_file_enable_tools = ['node']
+
+# configure `mise install` to always keep the downloaded archive
+always_keep_download = false        # deleted after install by default
+always_keep_install = false         # deleted on failure by default
+
+# config files with these prefixes will be trusted by default
+trusted_config_paths = [
+  '~/code',
+]
