@@ -3,6 +3,9 @@
 # Opt out of Homebrew analytics for this script
 export HOMEBREW_NO_ANALYTICS=1
 
+# Skip macOS quarantine dialogs for Homebrew Cask applications
+export HOMEBREW_CASK_OPTS="--no-quarantine"
+
 echo "🚀 Starting macOS setup..."
 
 # Keep sudo credentials alive throughout the script

@@ -1,3 +1,6 @@
+# Skip macOS quarantine dialogs for Homebrew Cask applications
+export HOMEBREW_CASK_OPTS="--no-quarantine"
+
 # Load Rust/Cargo environment if installed
 if [ -f "$HOME/.cargo/env" ]; then
   . "$HOME/.cargo/env"
