@@ -80,6 +80,8 @@ defaults write com.raycast.macos raycastGlobalHotkey -string "Command-49"
 
 # Configure power management and screen lock settings
 echo "⚡ Configuring power settings..."
+# Refresh sudo credentials before running pmset
+sudo -v
 # Never sleep the display
 sudo pmset -a displaysleep 0
 # Disable requiring password after sleep/screen saver
