@@ -65,7 +65,9 @@ brew bundle install --file="${BASH_SOURCE%/*}/Brewfile"
 
 # Disable Spotlight's Cmd+Space shortcut for Raycast
 echo "⌨️  Configuring keyboard shortcuts..."
-defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "{enabled = 0; value = { parameters = (65535, 49, 1048576); type = 'standard'; };}"
+HOTKEYS_PLIST="$HOME/Library/Preferences/com.apple.symbolichotkeys.plist"
+/usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:64:enabled false" "$HOTKEYS_PLIST" 2>/dev/null \
+  || /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:64:enabled bool false" "$HOTKEYS_PLIST"
 
 # Set Raycast to use Cmd+Space
 defaults write com.raycast.macos raycastGlobalHotkey -string "Command-49"
