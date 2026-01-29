@@ -5,6 +5,27 @@ export HOMEBREW_NO_ANALYTICS=1
 
 echo "🚀 Starting macOS setup..."
 
+# Prompt for computer name
+current_computer_name=$(scutil --get ComputerName 2>/dev/null || echo "Not set")
+echo ""
+read -p "💻 Enter computer name (current: $current_computer_name) [press Enter to keep]: " new_computer_name
+
+if [ -n "$new_computer_name" ]; then
+    echo "🔧 Setting computer names..."
+    sudo scutil --set ComputerName "$new_computer_name"
+
+    # Convert to hostname format (lowercase, spaces to hyphens)
+    hostname=$(echo "$new_computer_name" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
+    sudo scutil --set HostName "$hostname"
+    sudo scutil --set LocalHostName "$hostname"
+
+    echo "✅ Computer name set to: $new_computer_name"
+    echo "✅ Hostname set to: $hostname"
+else
+    echo "✅ Keeping current computer name: $current_computer_name"
+fi
+echo ""
+
 # Install Rosetta 2 on Apple Silicon Macs
 if [[ $(uname -m) == 'arm64' ]]; then
     if ! /usr/bin/pgrep -q oahd; then
