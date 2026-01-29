@@ -5,6 +5,11 @@ export HOMEBREW_NO_ANALYTICS=1
 
 echo "🚀 Starting macOS setup..."
 
+# Keep sudo credentials alive throughout the script
+sudo -v
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+SUDO_KEEPALIVE_PID=$!
+
 # Prompt for computer name
 current_computer_name=$(scutil --get ComputerName 2>/dev/null || echo "Not set")
 echo ""
@@ -54,6 +59,13 @@ fi
 # Install and upgrade packages from Brewfile
 echo "📦 Installing and upgrading packages from Brewfile..."
 brew bundle install --file="${BASH_SOURCE%/*}/Brewfile"
+
+# Disable Spotlight's Cmd+Space shortcut for Raycast
+echo "⌨️  Configuring keyboard shortcuts..."
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "{enabled = 0; value = { parameters = (65535, 49, 1048576); type = 'standard'; };}"
+
+# Set Raycast to use Cmd+Space
+defaults write com.raycast.macos raycastGlobalHotkey -string "Command-49"
 
 # Symlink config files
 echo "🔗 Linking configuration files..."
@@ -109,3 +121,10 @@ echo "🔧 Installing mise tools..."
 mise install
 
 echo "✨ Setup complete!"
+echo ""
+echo "⚠️  Note: You need to log out and log back in for keyboard shortcuts to take effect"
+echo "   - Spotlight Cmd+Space: disabled"
+echo "   - Raycast Cmd+Space: enabled"
+
+# Stop the sudo keepalive process
+kill "$SUDO_KEEPALIVE_PID" 2>/dev/null
