@@ -23,10 +23,6 @@ fi
 echo "📦 Installing and upgrading packages from Brewfile..."
 brew bundle install --file="${BASH_SOURCE%/*}/Brewfile"
 
-# Remove packages not in Brewfile
-echo "🧹 Removing packages not in Brewfile..."
-brew bundle cleanup --force --file="${BASH_SOURCE%/*}/Brewfile"
-
 # Symlink config files
 echo "🔗 Linking configuration files..."
 DOTFILES_DIR="$(cd "${BASH_SOURCE%/*}" && pwd)"

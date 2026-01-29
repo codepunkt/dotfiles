@@ -69,20 +69,25 @@ brew "fontconfig"       # Font configuration library
 # AI & Development Tools
 # ----------------------------------------------------------------------------
 cask "claude-code"                  # Claude CLI coding assistant
+cask "conductor"                    # Claude code parallelisation
 cask "chatgpt"                      # ChatGPT desktop app
 cask "codex"                        # OpenAI Codex coding agent
 cask "antigravity"                  # AI coding agent IDE
+cask "cursor"                       # AI-powered code editor
 cask "visual-studio-code"           # Code editor
 cask "github"                       # GitHub Desktop
 
 # ----------------------------------------------------------------------------
 # Terminals
 # ----------------------------------------------------------------------------
-cask "ghostty"                      # Platform-native GPU terminal
-cask "wezterm"                      # GPU-accelerated terminal & multiplexer
 cask "warp"                         # Rust-based terminal
-cask "kitty"                        # GPU-based terminal
-cask "iterm2"                       # Feature-rich terminal
+
+# ----------------------------------------------------------------------------
+# Browsers
+# ----------------------------------------------------------------------------
+cask "google-chrome"                # Google Chrome browser
+cask "firefox"                      # Mozilla Firefox browser
+cask "microsoft-edge"               # Microsoft Edge browser
 
 # ----------------------------------------------------------------------------
 # Developer Tools
@@ -108,7 +113,6 @@ cask "discord"                      # Voice and text chat
 # ----------------------------------------------------------------------------
 cask "spotify"                      # Music streaming
 cask "spotmenu"                     # Spotify/iTunes menu bar
-cask "steam"                        # Gaming platform
 
 # ----------------------------------------------------------------------------
 # Utilities
@@ -117,7 +121,6 @@ cask "nordvpn"                      # VPN client
 cask "background-music"             # Per-app audio control
 cask "elgato-control-center"        # Control Elgato devices
 cask "philips-hue-sync"             # Smart light control
-cask "live-home-3d"                 # Home design software
 
 # ----------------------------------------------------------------------------
 # Fonts

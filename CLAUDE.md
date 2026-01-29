@@ -9,10 +9,12 @@ This is a **declarative macOS environment configuration** repository. The goal i
 The `bootstrap.sh` script MUST be safe to run repeatedly. Each execution should:
 1. Install missing packages
 2. Upgrade outdated packages
-3. Remove packages not in the Brewfile
-4. Never break existing installations
+3. Never break existing installations
+4. Allow locally-installed packages not in the Brewfile
 
-This enables the workflow: `git pull && ./bootstrap.sh` to sync any machine to the repository state.
+**Philosophy:** The Brewfile defines the **minimum required** setup, not the exact state. This allows for machine-specific customizations without them being removed.
+
+This enables the workflow: `git pull && ./bootstrap.sh` to ensure all machines have the baseline tools.
 
 ## File Structure
 
@@ -45,7 +47,6 @@ The setup orchestrator. Must:
 - Install Homebrew if missing (first-time setup only)
 - Configure PATH for Apple Silicon Macs
 - Run `brew bundle install` to sync packages (installs + upgrades)
-- Run `brew bundle cleanup --force` to remove extras
 - Symlink config files:
   - `.config/mise` → `~/.config/mise`
   - `.config/ohmyposh` → `~/.config/ohmyposh`
@@ -69,10 +70,12 @@ When user installs something new on one machine:
 3. Other machines sync via `git pull && ./bootstrap.sh`
 
 ### Removing Software
-When user uninstalls something:
-1. They can either `brew uninstall` then `brew bundle dump --force`
-2. Or manually edit the Brewfile to remove the entry
-3. Either way, `bootstrap.sh` will remove it on other machines via cleanup
+When user wants to remove something from the baseline setup:
+1. Remove the entry from the Brewfile
+2. Manually uninstall it on each machine: `brew uninstall <package>`
+3. The Brewfile now reflects the updated baseline for new machines
+
+Note: Removing from Brewfile doesn't auto-uninstall from existing machines (no cleanup step).
 
 ### Syncing Machines
 The workflow is always:
@@ -86,7 +89,7 @@ git pull              # Get latest Brewfile
 ### DO NOT:
 - Add features without user request (no shell configs, symlinks, etc. unless asked)
 - Make bootstrap.sh non-idempotent
-- Skip the cleanup step (user wants automatic removal of unlisted packages)
+- Add cleanup step (allows machine-specific packages to coexist with baseline)
 - Create backup/rollback mechanisms (trust git history)
 
 ### DO:
@@ -132,12 +135,12 @@ Commits should only reflect the user's authorship.
 
 ## Homebrew Bundle Behavior
 
-Key `brew bundle` commands:
-- `brew bundle install` - Installs missing + upgrades outdated (default behavior)
-- `brew bundle cleanup --force` - Removes packages not in Brewfile
+Key `brew bundle` commands used in this repository:
+- `brew bundle install` - Installs missing + upgrades outdated (used in bootstrap.sh)
 - `brew bundle dump --force` - Generates Brewfile from current system
 
-The `--force` flag in cleanup means "actually do it" (without it, just shows what would be removed).
+Commands NOT used (but available):
+- `brew bundle cleanup --force` - Removes packages not in Brewfile (deliberately not used to allow machine-specific packages)
 
 ## Future Extensions
 
@@ -166,12 +169,7 @@ Update Brewfile with current system:
 brew bundle dump --force
 ```
 
-Sync system to Brewfile:
+Sync system to Brewfile (installs missing, upgrades outdated):
 ```bash
 ./bootstrap.sh
-```
-
-Check what would be cleaned up (without doing it):
-```bash
-brew bundle cleanup
 ```
