@@ -24,7 +24,11 @@ fi
 
 # Install and upgrade packages from Brewfile
 echo "📦 Installing and upgrading packages from Brewfile..."
-brew bundle install --file="${BASH_SOURCE%/*}/Brewfile"
+brew bundle install --file="${BASH_SOURCE%/*}/Brewfile" || {
+    echo "⚠️  Some packages failed to install. Retrying failed packages..."
+    sleep 2
+    brew bundle install --file="${BASH_SOURCE%/*}/Brewfile" || echo "⚠️  Some packages still failed. You can retry with: brew bundle install"
+}
 
 # Symlink config files
 echo "🔗 Linking configuration files..."
