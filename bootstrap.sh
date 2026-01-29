@@ -29,7 +29,7 @@ brew bundle cleanup --force --file="${BASH_SOURCE%/*}/Brewfile"
 
 # Symlink config files
 echo "🔗 Linking configuration files..."
-DOTFILES_DIR="${BASH_SOURCE%/*}"
+DOTFILES_DIR="$(cd "${BASH_SOURCE%/*}" && pwd)"
 
 # Create ~/.config if it doesn't exist
 mkdir -p ~/.config
