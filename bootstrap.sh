@@ -70,9 +70,22 @@ brew bundle install --file="${BASH_SOURCE%/*}/Brewfile"
 
 # Disable Spotlight's Cmd+Space shortcut for Raycast
 echo "⌨️  Configuring keyboard shortcuts..."
-HOTKEYS_PLIST="$HOME/Library/Preferences/com.apple.symbolichotkeys.plist"
-/usr/libexec/PlistBuddy -c "Set :AppleSymbolicHotKeys:64:enabled false" "$HOTKEYS_PLIST" 2>/dev/null \
-  || /usr/libexec/PlistBuddy -c "Add :AppleSymbolicHotKeys:64:enabled bool false" "$HOTKEYS_PLIST"
+defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "
+<dict>
+    <key>enabled</key>
+    <false/>
+    <key>value</key>
+    <dict>
+        <key>parameters</key>
+        <array>
+            <integer>32</integer>
+            <integer>49</integer>
+            <integer>1048576</integer>
+        </array>
+        <key>type</key>
+        <string>standard</string>
+    </dict>
+</dict>"
 
 # Configure Raycast: skip onboarding, set hotkey
 defaults write com.raycast.macos onboardingSkipped -bool true
@@ -99,7 +112,7 @@ if ! pgrep -x "Raycast" > /dev/null; then
     echo "  ✓ Started Raycast"
 fi
 
-# Apply keyboard shortcut changes immediately (without requiring logout)
+# Apply keyboard shortcut changes immediately
 /System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
 
 # Symlink config files
@@ -156,11 +169,6 @@ echo "🔧 Installing mise tools..."
 mise install
 
 echo "✨ Setup complete!"
-echo ""
-echo "⚠️  Manual step required: Disable Spotlight's Cmd+Space shortcut"
-echo "   System Settings → Keyboard → Keyboard Shortcuts → Spotlight"
-echo "   → Uncheck 'Show Spotlight search'"
-echo ""
 echo "✅ Raycast configured with Cmd+Space and added to login items"
 
 # Stop the sudo keepalive process
