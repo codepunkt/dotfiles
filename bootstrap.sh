@@ -10,8 +10,14 @@ echo "🚀 Starting macOS setup..."
 
 # Keep sudo credentials alive throughout the script
 sudo -v
-while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+while true; do sudo -n true; sleep 30; kill -0 "$$" || exit; done 2>/dev/null &
 SUDO_KEEPALIVE_PID=$!
+
+# Configure power management (run immediately while sudo is fresh)
+echo "⚡ Configuring power settings..."
+sudo pmset -a displaysleep 0
+defaults write com.apple.screensaver askForPassword -int 0
+echo "  ✓ Display sleep disabled, no screen lock password"
 
 # Prompt for computer name
 current_computer_name=$(scutil --get ComputerName 2>/dev/null || echo "Not set")
@@ -90,15 +96,6 @@ defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add 64 "
 # Configure Raycast: skip onboarding, set hotkey
 defaults write com.raycast.macos onboardingSkipped -bool true
 defaults write com.raycast.macos raycastGlobalHotkey -string "Command-49"
-
-# Configure power management and screen lock settings
-echo "⚡ Configuring power settings..."
-# Refresh sudo credentials before running pmset
-sudo -v
-# Never sleep the display
-sudo pmset -a displaysleep 0
-# Disable requiring password after sleep/screen saver
-defaults write com.apple.screensaver askForPassword -int 0
 
 # Add Raycast to login items if not already present
 if ! osascript -e 'tell application "System Events" to get the name of every login item' 2>/dev/null | grep -q "Raycast"; then
