@@ -129,7 +129,16 @@ link_file() {
     local name="$3"
 
     if [ -L "$target" ]; then
-        echo "  ✓ $name already linked"
+        local current_target
+        current_target=$(readlink "$target")
+        if [ "$current_target" = "$source" ]; then
+            echo "  ✓ $name already linked"
+        else
+            echo "  ⚠ $name symlink points to wrong location, fixing..."
+            rm "$target"
+            ln -s "$source" "$target"
+            echo "  ✓ Linked $name"
+        fi
     elif [ -e "$target" ]; then
         echo "  ⚠ $name exists, backing up to ${target}.backup"
         mv "$target" "${target}.backup"
